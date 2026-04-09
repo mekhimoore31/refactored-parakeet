@@ -24,13 +24,13 @@ Pay_rate = {
     'salary': 52 ,
 }
 
-Goal_options = [
-    'Vacation',
-    'College-Fund',
-    'General Saving',
-    'Retirement',
-    'Other'
-]
+Goal_options = {
+    "1": "Vacation",
+    "2": "College-Fund",
+    "3": "General Saving",
+    "4": "Retirement",
+    "5": "Other"
+}
 
 
 #To figure out user goal
@@ -54,6 +54,12 @@ class Expense:
         self.total_cost = total_cost
         self.date = date
 
+class User_Responses:
+    def __init__(self, category, total_cost, date):
+        self.category = category
+        self.total_cost = total_cost
+        self.date = date
+
 #Actual budgeting part of the program
 class Budget_stuff:
 
@@ -65,11 +71,39 @@ class Budget_stuff:
 
 
     #function to calculate weekly salary if not already
-    # reported as weekly
-    
-    # function to 
+    #something like
+    #def calc_salary(self)
+        #info = User_Info()
+        #user income = expected salary in time period
+        #divided by pay rate input
+        #should return value of pay
 
-    #
+    #need some retroactive function where
+    #You saved *this much* from last weeks pay check, you need to save *this much*
+    #to stay on pace
+
+
+
+    def calc_save_time(self, target_amount, target_date_s):
+        today = datetime.today()
+        #Turns string into actual date time object to do calcs
+        target_date = datetime.strptime(target_date_s, '%Y-%m-%d')
+        
+        #calc num of days left
+        #.days extracts number of days from time difference
+        days_left = (target_date - today).days
+        weeks_left = round(days_left / 7)
+
+        #to calculate amount needed to save per week
+        save_per_week = target_amount/weeks_left
+
+        print(f'You have {weeks_left} weeks left until your goal')
+
+
+        return round(save_per_week,2)
+   
+
+       
     
 
     def start(self):
@@ -88,18 +122,46 @@ class Budget_stuff:
             #The following are just test outputs that show what we would expect
 
             if user_input == '1':
-                print('What are you saving for?')
-                print('User: vacation')
-                #Will come from a list of options like vacation, college-fund, etc,
-                #Let's say user chose vaction
-                print("Great! Let's start saving for vacation")
+                print('What are you saving for?\n')
+                print("1. Vacation")
+                print("2. College-Fund")
+                print("3. General Saving")
+                print("4. Retirement")
+                print("5. Other")
+
+                
+                
+
+                save_reason = input('Please enter a number: ')
+
+                if save_reason in Goal_options:
+                    goal_name = Goal_options[save_reason]
+                
+                if user_input.isdigit() and 1 <= int(save_reason) <= 4:
+                    print(f"Great! Let's start saving for your {goal_name}")
+                
+                elif user_input.isdigit() and int(save_reason) == 5:
+                    other_type = input('Please type out your reason: ')
+
+                else:
+                    print('Please select a number from 1-5')
+                
+                
                 #Ask user for goal amount
                 print('How much are you hoping to save?')
-                print('User: $2100')
-                print('How long until you want to reach your goal?')
-                print('User: Septermber 23, 2026')
+                save_amount = float(input('Please enter a numeric value: '))
+
+                #Ask for goal time
+                print('When you want to reach your goal?')
+                save_time = input('Please enter the desired date to reach your goal (in YYYY-mm-d): ')
+
                 #Then we will print something like
-                print('\nYou will need to save $175 a week for 12 weeks to reach your goal')
+                goal_msg = (f'You need to save ${self.calc_save_time(save_amount, save_time)} per week to reach your goal')
+                
+                print(goal_msg)
+
+                #Next step, store save amount and save time, need to subtract amount saved from total save amount
+                #
 
             elif user_input == '2':
                 #Want to tell user how much time they have left and how much money left
@@ -128,7 +190,7 @@ class Budget_stuff:
                 break
             #Make sure the user puts in a number option for simplicity sake
             else:
-                print('Invalid choice. Choose a number from 1 to 6.')
+                print('Invalid choice. Choose a number from 1 to 5.')
 
 
 
