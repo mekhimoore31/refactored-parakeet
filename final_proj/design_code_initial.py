@@ -1,8 +1,10 @@
 #python library to deal with date and time
 from datetime import datetime
 
-#Need to store the data somewhere to keep
-#record of the users budget info
+
+#NEXT BIG STEP
+#MAKE IT SPECIFIC TO USER INCOME, state what percent of income is needed to save 
+#Find categories that may be flagged for over spending from total income percentage
 
 
 #Categories for a user to indicate expense from
